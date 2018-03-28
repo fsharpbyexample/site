@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width">
+
+        <title>F# by Example : Functions</title>
+        <meta name="description" content="For people in a hurry">
+
+        <link href="/assets/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/css/syntax.css">
+        <link rel="stylesheet" href="/css/main.css">
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row">
+                <div id="header" class="col-sm-12">
+                    <h4><a class="brand" href="/">F# by Example</a>
+    <small>For people in a hurry</small>
+</h4>
+
+                </div>
+            </div>
+
+            <div class="row">
+                
+                
+                    <div id="navigation" class="col-sm-2">
+                        <ul class="nav nav-list">
+    
+        
+        
+
+        
+            
+                <li class="nav-header">Syntax</li>
+            
+            <li data-order="">
+                <a href="/syntax/pattern-matching.html">Pattern matching</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/syntax/if-statements.html">If statements</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/syntax/functions.html">Functions</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/syntax/variables.html">Variables</a>
+            </li>
+        
+    
+        
+        
+
+        
+            
+                <li class="nav-header">Design patterns</li>
+            
+            <li data-order="">
+                <a href="/patterns/polymorphism.html">Polymorphism</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/patterns/dependency-inversion.html">Dependency inversion</a>
+            </li>
+        
+    
+        
+        
+
+        
+            
+                <li class="nav-header">Projects</li>
+            
+            <li data-order="">
+                <a href="/projects/namespaces.html">Namespaces</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/projects/ordering.html">Ordering</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/projects/modules.html">Modules</a>
+            </li>
+        
+    
+        
+        
+
+        
+            
+                <li class="nav-header">Data access</li>
+            
+            <li data-order="">
+                <a href="/data/query-syntax.html">Query syntax</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/data/type-providers.html">Type providers</a>
+            </li>
+        
+    
+        
+        
+
+        
+            
+                <li class="nav-header">Testing</li>
+            
+            <li data-order="">
+                <a href="/testing/property-based-testing.html">Property based testing</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/testing/fsunit.html">FsUnit</a>
+            </li>
+        
+    
+        
+        
+
+        
+            
+                <li class="nav-header">Runtime</li>
+            
+            <li data-order="">
+                <a href="/runtime/browser.html">Browser</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/runtime/net-interop.html">.NET Interop</a>
+            </li>
+        
+    
+        
+        
+
+        
+            
+                <li class="nav-header">Types</li>
+            
+            <li data-order="">
+                <a href="/types/interfaces.html">Interfaces</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/types/aliases.html">Aliases</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/types/classes.html">Classes</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/types/unions.html">Unions</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/types/records.html">Records</a>
+            </li>
+        
+            
+            <li data-order="">
+                <a href="/types/tuples.html">Tuples</a>
+            </li>
+        
+    
+<!-- List additional links. It is recommended to add a divider
+    e.g. <li class="divider"></li> first to break up the content. -->
+</ul>
+
+                    </div>
+
+                    <div id="content" class="col-sm-10">
+                        <div class="page-header">
+    <h2>Functions
+        
+    </h2>
+</div>
+
+<h3 id="declaration--calling">Declaration &amp; Calling</h3>
+<p>Functions are declared using the <code class="highlighter-rouge">let</code> keyword followed by the function name and arguements seperated by spaces.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let squareOf x = x * x
+</code></pre></div></div>
+
+<p>If no type annotations are provided, the compiler attempts to infer the types of the arguements and the function. You can manually add type annotations using the <code class="highlighter-rouge">:</code> symbol:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let squareOf (x: float) : float = x * x
+</code></pre></div></div>
+
+<p>Functions are called by stating the function name followed by the arguments.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let squareOfThree = squareOf 3
+</code></pre></div></div>
+
+<h3 id="partial-application">Partial Application</h3>
+<p>A function can be <a href="https://en.wikipedia.org/Partial_Application">partially applied</a> by calling it with only some of the required arguments. The result is a new function.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let areaOfCircle radius = radius * radius * 3.14f
+</code></pre></div></div>
+
+<h3 id="infix-functions">Infix functions</h3>
+<p>Declare an infix function by wrapping the function name in brakets:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let (??) value default = if value = null then default else value 
+</code></pre></div></div>
+
+<p>This function can then either by called in infix form:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let stringOrNull = ...
+let valueOrDefault = nullValue ?? "Was null"
+</code></pre></div></div>
+
+<p>Or in regular prefix form:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let stringOrNull = ...
+let valueOrdefault = (??) nullValue "Was null"
+</code></pre></div></div>
+
+<p>Ordinary F# operators can be used in infix form:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let multiplyByThreeInfix i = i * 3
+let multiplyByThreePrefix = (*) 3
+</code></pre></div></div>
+
+<h3 id="composition">Composition</h3>
+<p>Two functions can be composed using the <code class="highlighter-rouge">&gt;&gt;</code> operator to create a new function. The return type of the first function must match the argument type of the second function:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let calulateAreaOfCircle radius = 3.14f * radius * radius
+let printAreaOfCircle area = printfn "The area of this circle is %f" area
+let calculateAndPrint = calculateAreaOfCircle &gt;&gt; printAreaOfCircle
+</code></pre></div></div>
+
+<h3 id="lambda-functions">Lambda Functions</h3>
+<p>Anonomous functions are declared using the <code class="highlighter-rouge">fun</code> key word followed by the arguments:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let numbers = [1; 2; 3; 4]
+let evenNumbers = List.filter (fun i -&gt; i % 2 = 0) numbers
+</code></pre></div></div>
+
+
+                    </div>
+                
+            </div>
+
+            
+
+            <div class="row">
+                <div id="footer" class="col-sm-12">
+                    Documentation for <a href="https://github.com/bruth/jekyll-docs-template">F# by Example</a>
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function orderNav() {
+                var list,
+                    section,
+                    header,
+                    sections = [],
+                    lists = {},
+                    headers = {};
+
+                var navUl = document.querySelectorAll('#navigation ul')[0],
+                    navLis = document.querySelectorAll('#navigation ul li');
+
+                if (!navUl) return;
+
+                for (var i = 0; i < navLis.length; i++) {
+                    var order, li = navLis[i];
+
+                    if (li.classList.contains('nav-header')) {
+                        section = li.textContent || li.innerText;
+                        sections.push(section);
+                        headers[section] = li;
+                        continue;
+                    }
+
+                    if (!lists[section]) {
+                        lists[section] = [];
+                    }
+
+                    order = parseFloat(li.getAttribute('data-order'))
+                    lists[section].push([order, li]);
+                }
+
+                for (var i = 0; i < sections.length; i++) {
+                    section = sections[i];
+                    list = lists[section].sort(function(a, b) {
+                        return a[0] - b[0];
+                    });
+
+                    if (header = headers[section]) {
+                        navUl.appendChild(header);
+                    }
+                    for (var j = 0; j < list.length; j++) {
+                        navUl.appendChild(list[j][1]);
+                    }
+                }
+            }
+
+            if (document.querySelectorAll) orderNav();
+        </script>
+        
+    </body>
+</html>
