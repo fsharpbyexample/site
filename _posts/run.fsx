@@ -1,13 +1,16 @@
-
 open System.IO
 open System.Linq
 
-let files = Directory.GetFiles("./", "2018*")
+        // file * newName * category
+type File = string * string
 
-for file in files do
-    let contents = File.ReadAllLines(file)
+let read path = 
+    let contents = File.ReadAllLines(path)
     let category = contents.Single(fun l -> l.StartsWith("category:")).Replace("category:", "").Trim()
-    printfn "%s" category
-    let newName = file.Replace("2018-03-29", category).Replace("2018-03-28", category)
-    Directory.Move(file, newName)
+    (path, path.Replace("2018-03-29", category + "0-").Replace("2018-03-28", category), category) 
+
+let files = Directory.GetFiles("./", "2018*") |> Seq.map read
+    
+for (path, newPath, category) in files do
+    Directory.Move(path, newPath)
     ()
