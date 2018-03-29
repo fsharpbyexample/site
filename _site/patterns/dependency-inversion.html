@@ -197,38 +197,75 @@
     </h2>
 </div>
 
-<h3 id="dependency-inversion">Dependency Inversion</h3>
 <p>Depencency inversion can be accomplished by providing your service instances as parameters passed to your domain functions. The service instances can be provided as single functions or implementations of interfaces.
 This is analagous to constructor injection in Object Orientated programming.</p>
 
 <h4 id="service-as-a-function">Service as a function</h4>
-<p>We define a <code class="highlighter-rouge">Logger</code> type alias to act as our interface.</p>
-<pre><code class="language-F#">type Logger = string -&gt; unit
-</code></pre>
-<p>We can then inject an instance of our <code class="highlighter-rouge">Logger</code> type into domain code. In this example, we are calculating the end of quarter bank balance for a company.</p>
-<pre><code class="language-F#">let calculateBalance (logger: Logger) revenue costs taxRate = 
-    let profit = revenue - costs
-    logger ("Total profit: " + profit.ToString())
+
+<div class="row">
+    <div class="col-md-6">
+        
+We define a `Logger` type alias to act as our interface.
+
+    </div>
+    <div class="col-md-6">
+        
+
+<figure class="highlight"><pre><code class="language-fsharp" data-lang="fsharp"><span class="k">type</span> <span class="nc">Logger</span> <span class="p">=</span> <span class="kt">string</span> <span class="p">-&gt;</span> <span class="kt">unit</span></code></pre></figure>
+
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        
+We can then inject an instance of our `Logger` type into domain code. In this example, we are calculating the end of quarter bank balance for a company.
+
+    </div>
+    <div class="col-md-6">
+        
+
+<figure class="highlight"><pre><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="n">calculateBalance</span> <span class="p">(</span><span class="n">logger</span><span class="p">:</span> <span class="nc">Logger</span><span class="p">)</span> <span class="n">revenue</span> <span class="n">costs</span> <span class="n">taxRate</span> <span class="p">=</span> 
+    <span class="k">let</span> <span class="n">profit</span> <span class="p">=</span> <span class="n">revenue</span> <span class="p">-</span> <span class="n">costs</span>
+    <span class="n">logger</span> <span class="p">(</span><span class="s2">"Total profit: "</span> <span class="o">+</span> <span class="n">profit</span><span class="p">.</span><span class="nc">ToString</span><span class="bp">()</span><span class="p">)</span>
     
-    let taxAmount = profit * taxRate
-    logger ("Total tax: " + profit.ToString())
+    <span class="k">let</span> <span class="n">taxAmount</span> <span class="p">=</span> <span class="n">profit</span> <span class="p">*</span> <span class="n">taxRate</span>
+    <span class="n">logger</span> <span class="p">(</span><span class="s2">"Total tax: "</span> <span class="o">+</span> <span class="n">profit</span><span class="p">.</span><span class="nc">ToString</span><span class="bp">()</span><span class="p">)</span>
 
-    let balance = profit - taxAmount
-    logger ("Remaining balance: " + balance.ToString())
+    <span class="k">let</span> <span class="n">balance</span> <span class="p">=</span> <span class="n">profit</span> <span class="p">-</span> <span class="n">taxAmount</span>
+    <span class="n">logger</span> <span class="p">(</span><span class="s2">"Remaining balance: "</span> <span class="o">+</span> <span class="n">balance</span><span class="p">.</span><span class="nc">ToString</span><span class="bp">()</span><span class="p">)</span>
     
-    balance
-</code></pre>
+    <span class="n">balance</span></code></pre></figure>
 
-<p>You can then use <a href="/syntax/partial-application">Partial Application</a> to bind a service instance to the function.</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// For testing
-let nullLogger str = ()
-// For productions
-let consoleLogger str = System.Console.WriteLine(str)
 
-let calcBalanceTesting = calculateBalance nullLogger
-let calcBalanceProduction = calculateBalance consoleLogger
+    </div>
+</div>
 
-let balance = calcBalanceTesting 100m 70m 0.2m
+<div class="language-fsharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// We can then inject an instance of our `Logger` type into domain code. In this example, we are calculating the end of quarter bank balance for a company.</span>
+<span class="k">let</span> <span class="n">calculateBalance</span> <span class="p">(</span><span class="n">logger</span><span class="p">:</span> <span class="nc">Logger</span><span class="p">)</span> <span class="n">revenue</span> <span class="n">costs</span> <span class="n">taxRate</span> <span class="p">=</span> 
+    <span class="k">let</span> <span class="n">profit</span> <span class="p">=</span> <span class="n">revenue</span> <span class="p">-</span> <span class="n">costs</span>
+    <span class="n">logger</span> <span class="p">(</span><span class="s2">"Total profit: "</span> <span class="o">+</span> <span class="n">profit</span><span class="p">.</span><span class="nc">ToString</span><span class="bp">()</span><span class="p">)</span>
+    
+    <span class="k">let</span> <span class="n">taxAmount</span> <span class="p">=</span> <span class="n">profit</span> <span class="p">*</span> <span class="n">taxRate</span>
+    <span class="n">logger</span> <span class="p">(</span><span class="s2">"Total tax: "</span> <span class="o">+</span> <span class="n">profit</span><span class="p">.</span><span class="nc">ToString</span><span class="bp">()</span><span class="p">)</span>
+
+    <span class="k">let</span> <span class="n">balance</span> <span class="p">=</span> <span class="n">profit</span> <span class="p">-</span> <span class="n">taxAmount</span>
+    <span class="n">logger</span> <span class="p">(</span><span class="s2">"Remaining balance: "</span> <span class="o">+</span> <span class="n">balance</span><span class="p">.</span><span class="nc">ToString</span><span class="bp">()</span><span class="p">)</span>
+    
+    <span class="n">balance</span>
+</code></pre></div></div>
+
+<div class="language-fsharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// You can then use [Partial Application](/syntax/partial-application) to bind a service instance to the function.</span>
+<span class="c1">// For testing</span>
+<span class="k">let</span> <span class="n">nullLogger</span> <span class="n">str</span> <span class="p">=</span> <span class="bp">()</span>
+<span class="c1">// For productions</span>
+<span class="k">let</span> <span class="n">consoleLogger</span> <span class="n">str</span> <span class="p">=</span> <span class="nn">System</span><span class="p">.</span><span class="nn">Console</span><span class="p">.</span><span class="nc">WriteLine</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+
+<span class="k">let</span> <span class="n">calcBalanceTesting</span> <span class="p">=</span> <span class="n">calculateBalance</span> <span class="n">nullLogger</span>
+<span class="k">let</span> <span class="n">calcBalanceProduction</span> <span class="p">=</span> <span class="n">calculateBalance</span> <span class="n">consoleLogger</span>
+
+<span class="k">let</span> <span class="n">balance</span> <span class="p">=</span> <span class="n">calcBalanceTesting</span> <span class="mi">100</span><span class="n">m</span> <span class="mi">70</span><span class="n">m</span> <span class="mi">0</span><span class="p">.</span><span class="mi">2</span><span class="n">m</span>
 </code></pre></div></div>
 
 <h4 id="service-as-an-interface">Service as an interface</h4>
