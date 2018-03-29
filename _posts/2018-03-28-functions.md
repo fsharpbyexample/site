@@ -65,3 +65,17 @@ Anonomous functions are declared using the `fun` key word followed by the argume
 let numbers = [1; 2; 3; 4]
 let evenNumbers = List.filter (fun i -> i % 2 = 0) numbers
 ```
+They can also be used to declare regular named functions using the `let` keyword:
+```
+let areaOfTriangle: float -> float -> float = fun base height -> 
+    (base / 2) * height
+```
+
+### Recursion
+A function must be marked with the `rec` keyword to allow recursion.
+```
+let rec fibonacci n = 
+    if n < 1 then 0
+    else if n = 1 then 1
+    else fibonacci (n-1) + fibonacci (n-2)
+```
